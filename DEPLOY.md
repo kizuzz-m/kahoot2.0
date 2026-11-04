@@ -37,7 +37,7 @@ Das Projekt ist mit `wrangler.jsonc` und `open-next.config.ts` bereits für Clou
 
 1. Auf <https://dash.cloudflare.com> → **Workers & Pages** → **Create** → **Import a repository** →
    GitHub verbinden und das Repository wählen.
-2. Projektname: `quizwerk` (muss mit `name` in `wrangler.jsonc` übereinstimmen).
+2. Projektname: z. B. `kahoot2-0` (muss mit `name` in `wrangler.jsonc` übereinstimmen).
 3. **Build command:** `npx opennextjs-cloudflare build` · **Deploy command:** `npx opennextjs-cloudflare deploy`
 4. Unter **Advanced settings → Build variables** eintragen (werden beim Build in die Seite eingebaut):
    `NEXT_PUBLIC_SUPABASE_URL` und `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
