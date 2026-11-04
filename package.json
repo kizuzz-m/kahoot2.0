@@ -1,0 +1,48 @@
+{
+  "name": "quizwerk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Quizwerk – Live-Multiplayer-Quiz mit Next.js, Supabase Realtime und QR-Code-Beitritt",
+  "scripts": {
+    "dev": "concurrently -k -n next,relay -c cyan,magenta \"next dev -H 0.0.0.0\" \"node relay/server.mjs\"",
+    "dev:next": "next dev -H 0.0.0.0",
+    "relay": "node relay/server.mjs",
+    "build": "next build",
+    "start": "concurrently -k -n next,relay -c cyan,magenta \"next start -H 0.0.0.0\" \"node relay/server.mjs\"",
+    "start:next": "next start -H 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@supabase/supabase-js": "^2.118.0",
+    "concurrently": "^10.0.6",
+    "next": "^16.4.5",
+    "papaparse": "^5.7.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1",
+    "ws": "^8.22.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.4",
+    "@types/node": "^26.6.6",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/ws": "^8.18.2",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.4",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

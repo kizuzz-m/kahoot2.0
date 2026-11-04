@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Grundfarben */
+  --color-ink: #0c1424;
+  --color-ink-2: #131e33;
+  --color-ink-3: #1c2a45;
+  --color-line: #2a3a5c;
+  --color-paper: #f6f3ec;
+  --color-muted: #93a1bd;
+
+  /* Antwortfarben (eigene Palette, mit Buchstaben A–F für Barrierefreiheit) */
+  --color-a1: #ff6b57; /* Koralle */
+  --color-a2: #ffb627; /* Safran */
+  --color-a3: #22c993; /* Minze */
+  --color-a4: #3d9bff; /* Himmel */
+  --color-a5: #e45fd0; /* Orchidee */
+  --color-a6: #9bd82e; /* Limette */
+
+  --color-brand: #ffb627;
+  --color-brand-2: #ff6b57;
+
+  --animate-pop: pop 380ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  --animate-rise: rise 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-wiggle: wiggle 600ms ease-in-out both;
+}
+
+@keyframes pop {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes rise {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+/* Dezentes Punktraster als Hintergrund */
+.bg-dots {
+  background-image: radial-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+/* Formular-Basis */
+.field {
+  width: 100%;
+  border-radius: 0.875rem;
+  border: 1.5px solid var(--color-line);
+  background: var(--color-ink-2);
+  padding: 0.7rem 0.9rem;
+  color: var(--color-paper);
+  outline: none;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.field:focus {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgb(255 182 39 / 0.2);
+}
+.field::placeholder {
+  color: rgb(147 161 189 / 0.7);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

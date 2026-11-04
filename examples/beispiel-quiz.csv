@@ -1,0 +1,4 @@
+titel;frage;antwort1;antwort2;antwort3;antwort4;antwort5;antwort6;richtig;zeit;punkte;bild;erklaerung
+Mein CSV-Quiz;Was ist die Hauptstadt der Schweiz?;Zürich;Bern;Genf;Basel;;;2;20;1000;;Bern ist die Bundesstadt.
+;Welche Zahlen sind Primzahlen?;2;9;11;15;17;;1|3|5;30;2000;;
+;Die Erde ist der dritte Planet von der Sonne aus.;Richtig;Falsch;;;;;A;10;500;;
