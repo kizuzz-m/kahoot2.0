@@ -1,12 +1,8 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
 import { LinkButton } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
+import { BEISPIEL_JSON as json, VORLAGE_CSV as csv } from "@/lib/vorlagen";
 
 export const metadata = { title: "Quizformat · Quizwerk" };
-
-const json = readFileSync(path.join(process.cwd(), "public/vorlagen/quizwerk-beispiel.json"), "utf8");
-const csv = readFileSync(path.join(process.cwd(), "public/vorlagen/quizwerk-vorlage.csv"), "utf8");
 
 const fields: [string, string, string][] = [
   ["title", "ja", "1–120 Zeichen (fehlt er, wird der Dateiname verwendet)"],

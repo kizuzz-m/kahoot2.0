@@ -31,6 +31,22 @@ Online läuft Quizwerk ohne eigenen Server: **Supabase** speichert die Quizze un
 2. Unter **Environment Variables** die drei Supabase-Werte aus Schritt 1 eintragen.
 3. **Deploy** klicken. Nach ca. 1 Minute ist die Seite unter `https://quizwerk-xxxx.vercel.app` erreichbar.
 
+### Alternative: Cloudflare Workers statt Vercel
+
+Das Projekt ist mit `wrangler.jsonc` und `open-next.config.ts` bereits für Cloudflare vorbereitet.
+
+1. Auf <https://dash.cloudflare.com> → **Workers & Pages** → **Create** → **Import a repository** →
+   GitHub verbinden und das Repository wählen.
+2. Projektname: `quizwerk` (muss mit `name` in `wrangler.jsonc` übereinstimmen).
+3. **Build command:** `npx opennextjs-cloudflare build` · **Deploy command:** `npx opennextjs-cloudflare deploy`
+4. Unter **Advanced settings → Build variables** eintragen (werden beim Build in die Seite eingebaut):
+   `NEXT_PUBLIC_SUPABASE_URL` und `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+5. **Deploy** klicken. Danach im Worker unter **Settings → Variables and Secrets** hinzufügen:
+   `NEXT_PUBLIC_SUPABASE_URL` (Text) und `SUPABASE_SERVICE_ROLE_KEY` (Typ *Secret*), speichern und unter
+   **Deployments** neu deployen.
+
+Lokal testen wie bei Cloudflare: `npm run cf:preview`.
+
 ## 4. Prüfen
 
 - `https://<deine-domain>/api/health` muss `"storage":"supabase","realtime":"supabase"` zeigen.
