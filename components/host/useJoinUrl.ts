@@ -31,7 +31,8 @@ export function useJoinUrl(code: string) {
       .catch(() => setLocalOnly(true));
   }, []);
 
-  const url = base ? `${base.replace(/\/$/, "")}/play/${code}` : "";
-  const display = url.replace(/^https?:\/\//, "").replace(/\/play\/\d+$/, "");
+  // Kurzlink /123456 – leitet auf /play/123456 weiter (siehe app/[code]/page.tsx).
+  const url = base ? `${base.replace(/\/$/, "")}/${code}` : "";
+  const display = url.replace(/^https?:\/\//, "").replace(/\/\d+$/, "");
   return { url, display, isLocalOnly };
 }

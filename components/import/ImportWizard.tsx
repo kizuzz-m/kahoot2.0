@@ -130,7 +130,7 @@ function Templates() {
         <p className="font-semibold">Vorlage · CSV</p>
         <p className="text-sm text-muted">Für Excel, Numbers, Google Sheets</p>
       </a>
-      <a href="/format" className="rounded-2xl bg-ink-3/60 p-4 hover:bg-ink-3">
+      <a href="/admin/format" className="rounded-2xl bg-ink-3/60 p-4 hover:bg-ink-3">
         <p className="font-semibold">Format-Dokumentation</p>
         <p className="text-sm text-muted">Alle Felder & Regeln erklärt</p>
       </a>

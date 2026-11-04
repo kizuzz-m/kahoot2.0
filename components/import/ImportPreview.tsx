@@ -26,7 +26,7 @@ export function ImportPreview({ result, onReset }: { result: ImportResult; onRes
     setError(null);
     try {
       for (let i = 0; i < items.length; i++) if (!savedIdx.has(i) && !items[i].errors.length) await saveOne(i);
-      router.push("/");
+      router.push("/admin");
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -71,7 +71,7 @@ export function ImportPreview({ result, onReset }: { result: ImportResult; onRes
                 size="sm"
                 onClick={() => {
                   stashDraft(item.quiz);
-                  router.push("/create");
+                  router.push("/admin/create");
                 }}
               >
                 Im Editor öffnen

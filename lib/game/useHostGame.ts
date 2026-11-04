@@ -103,7 +103,7 @@ export function useHostGame(code: string) {
     (async () => {
       try {
         const gameRes = await fetch(`/api/games/${code}`);
-        if (!gameRes.ok) throw new Error("Spiel nicht gefunden. Starte das Quiz erneut von der Startseite.");
+        if (!gameRes.ok) throw new Error("Spiel nicht gefunden. Starte das Quiz erneut aus der Übersicht.");
         const game = (await gameRes.json()) as { quizId: string };
         const quizRes = await fetch(`/api/quizzes/${game.quizId}`);
         if (!quizRes.ok) throw new Error("Das Quiz zu diesem Spiel existiert nicht mehr.");

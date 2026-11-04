@@ -42,7 +42,7 @@ Das Projekt ist mit `wrangler.jsonc` und `open-next.config.ts` bereits für Clou
 4. Unter **Advanced settings → Build variables** eintragen (werden beim Build in die Seite eingebaut):
    `NEXT_PUBLIC_SUPABASE_URL` und `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 5. **Deploy** klicken. Danach im Worker unter **Settings → Variables and Secrets** hinzufügen:
-   `NEXT_PUBLIC_SUPABASE_URL` (Text) und `SUPABASE_SERVICE_ROLE_KEY` (Typ *Secret*), speichern und unter
+   `NEXT_PUBLIC_SUPABASE_URL` (Text), `SUPABASE_SERVICE_ROLE_KEY` und `ADMIN_PASSWORD` (beide Typ *Secret*), speichern und unter
    **Deployments** neu deployen.
 
 Lokal testen wie bei Cloudflare: `npm run cf:preview`.
@@ -50,12 +50,12 @@ Lokal testen wie bei Cloudflare: `npm run cf:preview`.
 ## 4. Prüfen
 
 - `https://<deine-domain>/api/health` muss `"storage":"supabase","realtime":"supabase"` zeigen.
-- Startseite → „Beispielquiz anlegen“ → „Live spielen“ → QR-Code mit dem Handy scannen (mobiles Netz genügt).
+- `/admin` öffnen → anmelden → „Beispielquiz anlegen“ → „Hosten“ → QR-Code mit dem Handy scannen (mobiles Netz genügt).
 
 Jeder weitere `git push` auf `main` aktualisiert die Webseite automatisch.
 
 ## Wichtig: Zugriffsschutz
 
-Quizwerk hat **keine Anmeldung**. Wer die Adresse kennt, kann Quizze anlegen, bearbeiten und löschen. Für den
-privaten Einsatz die Adresse nur gezielt weitergeben oder in Vercel unter **Settings → Deployment Protection**
-den Zugriff einschränken (Achtung: Spieler müssen die Seite dann ebenfalls öffnen können).
+Die Startseite `/` dient nur zum Beitreten. Erstellen, Bearbeiten und Hosten liegen unter `/admin` und sind mit
+`ADMIN_PASSWORD` geschützt. Ohne diese Variable ist `/admin` für alle offen – online also immer setzen
+(bei Vercel unter *Environment Variables*, bei Cloudflare als *Secret*).

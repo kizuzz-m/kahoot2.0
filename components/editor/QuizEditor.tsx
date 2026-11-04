@@ -112,9 +112,9 @@ export function QuizEditor({ quizId, initial }: { quizId?: string; initial?: Qui
       setSaved(true);
       if (thenPlay) {
         const game = await api.createGame(savedQuiz.id);
-        router.push(`/host/${game.code}`);
+        router.push(`/admin/host/${game.code}`);
       } else if (!quizId) {
-        router.replace(`/edit/${savedQuiz.id}`);
+        router.replace(`/admin/edit/${savedQuiz.id}`);
       }
     } catch (err) {
       setIssues(err instanceof ApiError && err.issues.length ? err.issues : [err instanceof Error ? err.message : String(err)]);
@@ -128,7 +128,7 @@ export function QuizEditor({ quizId, initial }: { quizId?: string; initial?: Qui
     <div className="min-h-dvh">
       <header className="sticky top-0 z-20 border-b border-line bg-ink/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
-          <Logo />
+          <Logo href="/admin" />
           <input
             className="field font-display max-w-md flex-1 py-2 text-lg font-bold"
             placeholder="Titel des Quiz"
@@ -141,7 +141,7 @@ export function QuizEditor({ quizId, initial }: { quizId?: string; initial?: Qui
             <span className="hidden text-sm text-muted sm:inline" aria-live="polite">
               {saving ? "Speichere …" : saved ? "Gespeichert ✓" : dirty ? "Ungespeicherte Änderungen" : ""}
             </span>
-            <Button variant="ghost" size="sm" onClick={() => router.push("/")}>
+            <Button variant="ghost" size="sm" onClick={() => router.push("/admin")}>
               Schließen
             </Button>
             <Button variant="secondary" size="sm" onClick={() => save(false)} disabled={saving}>

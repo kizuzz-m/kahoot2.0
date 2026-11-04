@@ -1,5 +1,6 @@
 import os from "node:os";
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,8 @@ export const dynamic = "force-dynamic";
  * Smartphones im selben WLAN erreichbar ist, obwohl der Host über „localhost“ geöffnet wurde.
  */
 export async function GET() {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   const addresses = Object.values(os.networkInterfaces())
     .flat()
     .filter((i): i is os.NetworkInterfaceInfo => Boolean(i && i.family === "IPv4" && !i.internal))

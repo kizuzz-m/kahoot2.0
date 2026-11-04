@@ -29,38 +29,33 @@ export function JoinCard() {
   }
 
   return (
-    <form
-      onSubmit={submit}
-      className="relative rounded-[28px] border border-line bg-ink-2/90 p-6 shadow-2xl shadow-black/40 backdrop-blur sm:p-8"
-    >
-      <div className="absolute -top-3 left-6 rotate-[-3deg] rounded-full bg-a3 px-3 py-1 text-xs font-bold uppercase tracking-wider text-ink">
-        Mitspielen
-      </div>
-      <label htmlFor="game-code" className="font-display text-2xl font-bold">
-        Spielcode eingeben
+    <form onSubmit={submit} className="card p-6 shadow-2xl shadow-black/30 sm:p-8">
+      <label htmlFor="game-code" className="font-display block text-center text-2xl font-bold">
+        Spiel beitreten
       </label>
-      <p className="mt-1 text-sm text-muted">Den Code siehst du auf dem Bildschirm des Hosts.</p>
       <input
         id="game-code"
         inputMode="numeric"
         autoComplete="off"
-        placeholder="123 456"
+        autoFocus
+        placeholder="000 000"
         value={code.length > 3 ? `${code.slice(0, 3)} ${code.slice(3)}` : code}
         onChange={(e) => {
           setCode(normalizeCode(e.target.value));
           setError(null);
         }}
-        className="field font-display mt-5 text-center text-4xl font-extrabold tracking-[0.2em]"
+        className="field font-display mt-6 h-16 text-center text-4xl font-extrabold tracking-[0.15em] tabular-nums"
+        aria-label="Spielcode"
         aria-invalid={Boolean(error)}
         aria-describedby={error ? "join-error" : undefined}
       />
       {error && (
-        <p id="join-error" className="mt-2 text-sm font-medium text-a1">
+        <p id="join-error" className="mt-2 text-center text-sm font-medium text-a1">
           {error}
         </p>
       )}
-      <Button type="submit" size="lg" className="mt-5 w-full" disabled={busy || code.length !== 6}>
-        {busy ? "Suche Spiel …" : "Spiel beitreten"}
+      <Button type="submit" size="lg" className="mt-4 w-full" disabled={busy || code.length !== 6}>
+        {busy ? "Suche Spiel …" : "Beitreten"}
       </Button>
     </form>
   );

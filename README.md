@@ -32,11 +32,14 @@ beliebig vielen Geräten** spielst. Der Host zeigt Fragen auf einem großen Bild
 
 ## Funktionen
 
-**Startseite**
-- Buttons „Quiz erstellen“ und „Quiz importieren“
-- Eingabefeld für den Spielcode + „Spiel beitreten“
-- Übersicht aller gespeicherten Quizze mit *Live spielen*, *Bearbeiten*, *Export (JSON)* und *Löschen*
-- „Beispielquiz anlegen“ für den ersten Test
+**Beitrittsseite (`/`)**
+- Nur ein Eingabefeld für den Spielcode – ideal für Spieler:innen
+- Kurzlink `/<CODE>` (z. B. `/123456`) führt direkt ins Spiel; der QR-Code nutzt ihn
+
+**Admin-Bereich (`/admin`)**
+- Geschützt mit `ADMIN_PASSWORD` (ohne Variable offen, z. B. lokal)
+- Übersicht aller gespeicherten Quizze mit *Hosten*, *Bearbeiten*, *Export (JSON)* und *Löschen*
+- „Quiz erstellen“, „Importieren“ und „Beispielquiz anlegen“ für den ersten Test
 
 **Quiz-Editor**
 - Fragetext, optionales Bild (Upload mit automatischer Verkleinerung, Drag & Drop oder Bild-URL)
@@ -55,7 +58,7 @@ beliebig vielen Geräten** spielst. Der Host zeigt Fragen auf einem großen Bild
 - **Andere Plattform**: Link einfügen → Quizwerk erkennt bekannte Plattformen ohne offizielle Import-API und erklärt
   klar den manuellen Weg über JSON/CSV
 - Vorschau mit Fehlern und Hinweisen, Titel anpassen, „Im Editor öffnen“ zum Korrigieren
-- Downloadbare Vorlagen und Format-Dokumentation unter `/format`
+- Downloadbare Vorlagen und Format-Dokumentation unter `/admin/format`
 
 **Live-Spiel**
 - Lobby mit großem Code, **QR-Code** und Spielerliste (Spieler per Klick entfernen)
@@ -82,7 +85,7 @@ npm install
 npm run dev
 ```
 
-Öffne **http://localhost:3000**, klicke auf **„Beispielquiz anlegen“** und dann auf **„▶ Live spielen“**.
+Öffne **http://localhost:3000/admin**, klicke auf **„Beispielquiz anlegen“** und dann auf **„▶ Hosten“**.
 Öffne die angezeigte Beitritts-Adresse in einem zweiten Browserfenster (oder auf dem Handy), gib einen Namen ein –
 fertig.
 
@@ -171,7 +174,7 @@ Mehrfachauswahl müssen **genau** die richtigen Optionen gewählt sein.
 
 ## Quiz-Import & Dateiformat
 
-Die vollständige Spezifikation steht in **[`docs/FORMAT.md`](docs/FORMAT.md)** und in der App unter `/format`.
+Die vollständige Spezifikation steht in **[`docs/FORMAT.md`](docs/FORMAT.md)** und in der App unter `/admin/format`.
 Beispieldateien: [`examples/beispiel-quiz.json`](examples/beispiel-quiz.json), [`examples/beispiel-quiz.csv`](examples/beispiel-quiz.csv).
 
 **JSON (Kurzform)**
@@ -244,20 +247,24 @@ offizielle Import-API zeigt der Tab „Andere Plattform“ eine klare Meldung un
 
 ```
 app/
-  page.tsx                 Startseite (Hero, Beitreten, Quiz-Übersicht)
-  create/, edit/[id]/      Quiz-Editor
-  import/                  Import-Assistent
-  format/                  Format-Dokumentation
-  host/[code]/             Host-Bildschirm
+  page.tsx                 Beitrittsseite (nur Spielcode)
+  [code]/                  Kurzlink /123456 → /play/123456
   play/[code]/             Spieler-Ansicht
+  admin/login/             Admin-Anmeldung
+  admin/(app)/             geschützt (layout.tsx prüft die Anmeldung)
+    page.tsx               Quiz-Übersicht
+    create/, edit/[id]/    Quiz-Editor
+    import/, format/       Import-Assistent, Format-Dokumentation
+    host/[code]/           Host-Bildschirm
   api/
     quizzes/               GET, POST · [id]: GET, PUT, DELETE
     games/                 POST (Spielraum + Code) · [code]: GET, PATCH · [code]/results: GET, POST
     network/               LAN-Adressen für den QR-Code
     health/                aktiver Speicher-/Realtime-Modus
+    admin/login, logout    Admin-Sitzung (Cookie)
 components/
   ui/                      Button, Logo, Timer, Verbindungsstatus, Antwortfarben
-  home/  editor/  import/  host/  player/
+  admin/  home/  editor/  import/  host/  player/
 lib/
   types.ts, schema.ts      Datenmodell + Zod-Validierung
   storage/                 Repository-Interface, Supabase- und Datei-Implementierung
@@ -336,7 +343,7 @@ ersetze den Hinweis-Eintrag durch eine solche Quelle.
 | Badge zeigt „Getrennt – verbinde neu“ | Läuft der Relay? `npm run dev` startet ihn mit. Port 3001 frei? Firewall? |
 | Handy findet die Seite nicht | Gleiches WLAN? Firewall für Port 3000/3001? `NEXT_PUBLIC_BASE_URL` setzen. |
 | „Spiel nicht gefunden“ | Code prüfen. Im lokalen Modus muss derselbe Server laufen, der das Spiel erstellt hat. |
-| Host-Tab geschlossen | Seite `/host/<CODE>` im selben Tab neu öffnen bzw. neu laden – der Zustand wird wiederhergestellt. |
+| Host-Tab geschlossen | Seite `/admin/host/<CODE>` im selben Tab neu öffnen bzw. neu laden – der Zustand wird wiederhergestellt. |
 | Open Trivia DB: „Zu viele Anfragen“ | Die API erlaubt eine Anfrage alle 5 Sekunden – kurz warten. |
 | Supabase: keine Live-Updates | Realtime im Projekt aktiv? „Private channels only“ deaktiviert? Keys korrekt? |
 | Große Bilder | Uploads werden auf 1024 px verkleinert. Sehr große data-URLs werden nur auf dem Host-Bildschirm gezeigt. |

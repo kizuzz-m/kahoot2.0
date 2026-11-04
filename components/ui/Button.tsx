@@ -5,18 +5,16 @@ type Variant = "primary" | "secondary" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-brand text-ink shadow-[0_4px_0_0_#c98a0e] hover:brightness-105 active:translate-y-[3px] active:shadow-[0_1px_0_0_#c98a0e]",
-  secondary:
-    "bg-ink-3 text-paper border border-line shadow-[0_4px_0_0_#0a1120] hover:bg-[#22325a] active:translate-y-[3px] active:shadow-[0_1px_0_0_#0a1120]",
-  ghost: "text-paper/80 hover:text-paper hover:bg-white/5",
-  danger: "bg-a1/15 text-a1 border border-a1/40 hover:bg-a1/25",
+  primary: "bg-brand text-ink shadow-sm shadow-brand/20 hover:bg-[#ffc24d] active:scale-[0.98]",
+  secondary: "bg-white/[0.06] text-paper border border-line hover:bg-white/10 hover:border-[#3a4d75] active:scale-[0.98]",
+  ghost: "text-paper/70 hover:text-paper hover:bg-white/[0.06]",
+  danger: "text-a1/90 hover:text-a1 hover:bg-a1/10",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "px-3 py-1.5 text-sm rounded-xl gap-1.5",
-  md: "px-5 py-2.5 text-base rounded-2xl gap-2",
-  lg: "px-7 py-4 text-lg rounded-2xl gap-2.5",
+  sm: "h-9 px-3.5 text-sm rounded-lg gap-1.5",
+  md: "h-11 px-5 text-[15px] rounded-xl gap-2",
+  lg: "h-14 px-7 text-lg rounded-xl gap-2.5",
 };
 
 const base =

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { handleError, notFound } from "@/lib/api";
 import { getRepository } from "@/lib/storage";
+import { requireAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,8 @@ const patchSchema = z.object({ status: z.enum(["lobby", "running", "finished"]) 
 
 export async function PATCH(req: Request, { params }: Ctx) {
   try {
+    const denied = await requireAdmin();
+    if (denied) return denied;
     const { code } = await params;
     const { status } = patchSchema.parse(await req.json());
     const game = await getRepository().updateGameStatus(code, status);

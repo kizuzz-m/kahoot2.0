@@ -22,8 +22,8 @@ export default function EditPage() {
         <div>
           <p className="font-display text-3xl font-bold">Quiz nicht gefunden</p>
           <p className="mt-2 text-muted">{error}</p>
-          <LinkButton href="/" className="mt-6">
-            Zur Startseite
+          <LinkButton href="/admin" className="mt-6">
+            Zur Übersicht
           </LinkButton>
         </div>
       </main>

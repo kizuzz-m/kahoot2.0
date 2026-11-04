@@ -1,8 +1,8 @@
-import { LinkButton } from "@/components/ui/Button";
-import { Logo } from "@/components/ui/Logo";
+import { AdminShell } from "@/components/admin/AdminShell";
+import { isAuthEnabled } from "@/lib/auth";
 import { BEISPIEL_JSON as json, VORLAGE_CSV as csv } from "@/lib/vorlagen";
 
-export const metadata = { title: "Quizformat · Quizwerk" };
+export const metadata = { title: "Quizformat · Quizwerk Admin" };
 
 const fields: [string, string, string][] = [
   ["title", "ja", "1–120 Zeichen (fehlt er, wird der Dateiname verwendet)"],
@@ -19,19 +19,12 @@ const fields: [string, string, string][] = [
 
 export default function FormatPage() {
   return (
-    <main className="mx-auto max-w-4xl px-5 pb-24 sm:px-8">
-      <header className="flex items-center justify-between py-6">
-        <Logo />
-        <LinkButton href="/import" variant="ghost" size="sm">
-          ← Zum Import
-        </LinkButton>
-      </header>
-      <h1 className="font-display mt-6 text-4xl font-extrabold">Das Quizwerk-Format</h1>
-      <p className="mt-2 text-paper/75">
-        Version 1 · Die vollständige Beschreibung inkl. tolerierter Varianten steht in <code>docs/FORMAT.md</code>.
-      </p>
-
-      <h2 className="font-display mt-10 text-2xl font-bold">JSON</h2>
+    <AdminShell
+      authEnabled={isAuthEnabled()}
+      title="Das Quizwerk-Format"
+      description="Version 1 · Aufbau der JSON- und CSV-Dateien für den Import."
+    >
+      <h2 className="font-display text-2xl font-bold">JSON</h2>
       <div className="mt-4 overflow-hidden rounded-2xl border border-line">
         <table className="w-full text-left text-sm">
           <thead className="bg-ink-3 text-muted">
@@ -60,6 +53,6 @@ export default function FormatPage() {
         (1-basiert), Buchstabe A–F oder Antworttext, mehrere mit <code>|</code> trennen.
       </p>
       <pre className="mt-4 overflow-x-auto rounded-2xl bg-ink-2 p-4 text-sm">{csv}</pre>
-    </main>
+    </AdminShell>
   );
 }

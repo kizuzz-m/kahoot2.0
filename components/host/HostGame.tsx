@@ -23,8 +23,8 @@ export function HostGame({ code }: { code: string }) {
         <div>
           <p className="font-display text-3xl font-bold">Spiel konnte nicht geladen werden</p>
           <p className="mt-2 text-muted">{load.message}</p>
-          <LinkButton href="/" className="mt-6">
-            Zur Startseite
+          <LinkButton href="/admin" className="mt-6">
+            Zur Übersicht
           </LinkButton>
         </div>
       </main>
@@ -38,7 +38,7 @@ export function HostGame({ code }: { code: string }) {
     try {
       actions.clearSession();
       const game = await api.createGame(state.quiz.id);
-      router.push(`/host/${game.code}`);
+      router.push(`/admin/host/${game.code}`);
     } catch {
       setRestarting(false);
     }
@@ -77,7 +77,7 @@ export function HostGame({ code }: { code: string }) {
             </Button>
           )}
           {state.phase === "lobby" && (
-            <LinkButton href="/" variant="ghost" size="sm">
+            <LinkButton href="/admin" variant="ghost" size="sm">
               Abbrechen
             </LinkButton>
           )}

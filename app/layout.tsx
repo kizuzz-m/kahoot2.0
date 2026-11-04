@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de">
-      <body className="bg-dots">{children}</body>
+      <body className="bg-app">{children}</body>
     </html>
   );
 }

@@ -23,6 +23,8 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
     throw new ApiError("Server nicht erreichbar. Läuft `npm run dev`?");
   }
   const body = await res.json().catch(() => ({}));
+  // Admin-Sitzung abgelaufen → zurück zur Anmeldung.
+  if (res.status === 401 && window.location.pathname.startsWith("/admin")) window.location.href = "/admin/login";
   if (!res.ok) throw new ApiError(body.error ?? `Fehler ${res.status}`, body.issues ?? [], res.status);
   return body as T;
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { handleError } from "@/lib/api";
 import { getRepository } from "@/lib/storage";
+import { requireAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,8 @@ const bodySchema = z.object({
 
 export async function GET(_req: Request, { params }: Ctx) {
   try {
+    const denied = await requireAdmin();
+    if (denied) return denied;
     const { code } = await params;
     return NextResponse.json(await getRepository().getResults(code));
   } catch (err) {
@@ -32,6 +35,8 @@ export async function GET(_req: Request, { params }: Ctx) {
 /** Speichert Spieler und Endstand eines Spiels. */
 export async function POST(req: Request, { params }: Ctx) {
   try {
+    const denied = await requireAdmin();
+    if (denied) return denied;
     const { code } = await params;
     const { players } = bodySchema.parse(await req.json());
     const repo = getRepository();

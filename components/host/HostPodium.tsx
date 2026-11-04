@@ -52,8 +52,8 @@ export function HostPodium({ state, onPlayAgain }: { state: HostState; onPlayAga
         <Button size="lg" onClick={onPlayAgain}>
           Nochmal spielen
         </Button>
-        <LinkButton href="/" variant="secondary" size="lg">
-          Zur Startseite
+        <LinkButton href="/admin" variant="secondary" size="lg">
+          Zur Übersicht
         </LinkButton>
       </div>
     </div>
