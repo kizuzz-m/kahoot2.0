@@ -1,0 +1,51 @@
+// ─────────────────────────────────────────────────────────────
+// Quizwerk – Vorlage für die Cloudflare-Worker-Konfiguration
+// Kopiere diese Datei nach wrangler.jsonc und passe die markierten Stellen an.
+// Hier stehen KEINE Geheimnisse – die kommen als Secrets in den Worker (siehe unten).
+// ─────────────────────────────────────────────────────────────
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Name des Workers. Ergibt ohne eigene Domain die Adresse <name>.<subdomain>.workers.dev.
+  // Kurz halten, das ist die Beitritts-URL für die Spieler.
+  "name": "quiz",
+
+  // Optional: Cloudflare-Account-ID (Dashboard → Workers & Pages → rechts «Account ID»).
+  // Nur nötig, wenn du in mehreren Accounts bist. Übersteuert CLOUDFLARE_ACCOUNT_ID.
+  // "account_id": "<DEINE-ACCOUNT-ID>",
+
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+
+  // Optional: eigene Domain. Die Zone muss im selben Cloudflare-Account liegen,
+  // DNS-Eintrag und Zertifikat legt Cloudflare beim Deploy selbst an.
+  // "routes": [
+  //   { "pattern": "quiz.example.com", "custom_domain": true }
+  // ],
+
+  // Adresse <name>.<subdomain>.workers.dev zusätzlich aktiv lassen (false = nur eigene Domain).
+  "workers_dev": true,
+
+  "observability": {
+    "enabled": true
+  }
+
+  // Optional, nicht geheim: feste Basis-URL für die QR-Codes.
+  // Ohne Wert wird die Adresse genommen, unter der die Seite aufgerufen wird.
+  // "vars": {
+  //   "PUBLIC_BASE_URL": "https://quiz.example.com"
+  // }
+
+  // Secrets – NICHT hier eintragen. Werden zur Laufzeit gelesen, nicht in den Build eingebaut:
+  //   npx wrangler secret put SUPABASE_URL
+  //   npx wrangler secret put SUPABASE_ANON_KEY
+  //   npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+  //   npx wrangler secret put ADMIN_PASSWORD
+  // oder alle auf einmal beim Deploy:
+  //   npx wrangler deploy --secrets-file .dev.vars
+}

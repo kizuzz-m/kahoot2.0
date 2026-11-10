@@ -34,6 +34,8 @@ Online läuft Quizwerk ohne eigenen Server: **Supabase** speichert die Quizze un
 ### Alternative: Cloudflare Workers statt Vercel
 
 Das Projekt ist mit `wrangler.jsonc` und `open-next.config.ts` bereits für Cloudflare vorbereitet.
+Vorlagen mit Erklärungen: [`wrangler.jsonc.example`](wrangler.jsonc.example) (Worker-Name, Account, eigene Domain)
+und [`.dev.vars.example`](.dev.vars.example) (die Secrets – nach `.dev.vars` kopieren, die Datei ist gitignored).
 
 1. Auf <https://dash.cloudflare.com> → **Workers & Pages** → **Create** → **Import a repository** →
    GitHub verbinden und das Repository wählen.

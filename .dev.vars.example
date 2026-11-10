@@ -1,0 +1,25 @@
+# ─────────────────────────────────────────────────────────────
+# Quizwerk – Vorlage für die Worker-Secrets
+# Kopiere diese Datei nach .dev.vars (gitignored) und fülle die Werte aus.
+#
+# Wofür:
+#  - lokal testen als Worker:  npm run cf:preview   (liest .dev.vars automatisch)
+#  - Secrets hochladen:         npx wrangler deploy --secrets-file .dev.vars
+#
+# Wichtig: Echte Werte nur hier oder als Worker-Secret ablegen, NICHT in .env/.env.local –
+# opennextjs-cloudflare build übernimmt .env-Dateien ins Worker-Bundle.
+# ─────────────────────────────────────────────────────────────
+
+# Supabase → Project Settings → API → «Project URL»
+SUPABASE_URL=https://<PROJEKT-REF>.supabase.co
+
+# Supabase → Project Settings → API → «anon public» Key
+# Geht für Realtime an den Browser (über /api/config) – das ist so vorgesehen.
+SUPABASE_ANON_KEY=
+
+# Supabase → Project Settings → API → «service_role» Key
+# GEHEIM: wird nur serverseitig in den API-Routen verwendet, nie an den Browser.
+SUPABASE_SERVICE_ROLE_KEY=
+
+# Passwort für den Admin-Bereich (/admin). Ohne Wert ist /admin für alle offen – online immer setzen.
+ADMIN_PASSWORD=
