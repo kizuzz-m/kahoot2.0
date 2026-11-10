@@ -7,7 +7,7 @@ export type ConnectionStatus = "connecting" | "connected" | "disconnected";
  * Implementierungen: Supabase Realtime (Broadcast) und lokaler WebSocket-Relay.
  */
 export interface RealtimeChannel {
-  readonly kind: "supabase" | "local";
+  readonly kind: "supabase" | "local" | "pending";
   send(message: GameMessage): void;
   onMessage(handler: (message: GameMessage) => void): () => void;
   onStatus(handler: (status: ConnectionStatus) => void): () => void;

@@ -1,14 +1,14 @@
 "use client";
 
 import { createClient, type RealtimeChannel as SbChannel, type SupabaseClient } from "@supabase/supabase-js";
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from "../config";
 import type { GameMessage } from "../game/protocol";
 import { Emitter, type ConnectionStatus, type RealtimeChannel } from "./types";
 
 let client: SupabaseClient | null = null;
-function getClient() {
+function getClient(url?: string, anonKey?: string) {
   if (!client) {
-    client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    if (!url || !anonKey) throw new Error("Supabase ist nicht konfiguriert");
+    client = createClient(url, anonKey, {
       auth: { persistSession: false },
       realtime: { params: { eventsPerSecond: 20 } },
     });
@@ -28,8 +28,8 @@ export class SupabaseRealtimeChannel implements RealtimeChannel {
   private queue: GameMessage[] = [];
   private closed = false;
 
-  constructor(code: string) {
-    this.channel = getClient().channel(`quizwerk:${code}`, {
+  constructor(code: string, url: string, anonKey: string) {
+    this.channel = getClient(url, anonKey).channel(`quizwerk:${code}`, {
       config: { broadcast: { self: false, ack: false } },
     });
     this.channel.on("broadcast", { event: EVENT }, ({ payload }) => {
