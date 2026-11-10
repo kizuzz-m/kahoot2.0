@@ -113,7 +113,7 @@ Falls es nicht klappt:
 - **Firewall**: Ports **3000** und **3001** für eingehende Verbindungen im privaten Netz erlauben
   (macOS fragt beim ersten Start nach, Windows Defender ebenfalls).
 - Mehrere Netzwerkkarten/VPN? Setze die richtige Adresse fest:
-  `NEXT_PUBLIC_BASE_URL=http://192.168.1.20:3000` in `.env.local`.
+  `PUBLIC_BASE_URL=http://192.168.1.20:3000` in `.env.local`.
 - Gäste-/Firmen-WLANs blockieren oft Verbindungen zwischen Geräten („Client Isolation“). Dann einen eigenen
   Hotspot nutzen oder Supabase verwenden (siehe unten) und die App deployen.
 - Der Dev-Server erlaubt typische private Netze (`192.168.*.*`, `10.*.*.*`, `172.*.*.*`, `*.local`). Weitere
@@ -133,8 +133,8 @@ App im Internet erreichbar sein soll (z. B. auf Vercel).
    (Dashboard → *Project Settings* → *API*):
 
    ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+   SUPABASE_URL=https://xxxx.supabase.co
+   SUPABASE_ANON_KEY=eyJ...
    SUPABASE_SERVICE_ROLE_KEY=eyJ...   # bleibt serverseitig, nie im Browser
    ```
 
@@ -142,6 +142,8 @@ App im Internet erreichbar sein soll (z. B. auf Vercel).
    `"storage":"supabase","realtime":"supabase"`.
 
 Hinweise:
+- Die Supabase-Werte werden **zur Laufzeit** gelesen und nicht in den Build eingebaut: Der Server liest sie direkt,
+  der Browser holt URL und Anon-Key über `/api/config`. Auf Cloudflare gehören sie deshalb als *Secrets* in den Worker.
 - Für Realtime werden **keine** Tabellen benötigt – Quizwerk nutzt *Broadcast*-Kanäle `quizwerk:<CODE>`. Falls du in
   den Realtime-Einstellungen „Nur private Kanäle erlauben“ aktiviert hast, deaktiviere das oder ergänze
   entsprechende RLS-Policies für `realtime.messages`.
@@ -342,7 +344,7 @@ ersetze den Hinweis-Eintrag durch eine solche Quelle.
 | Problem | Lösung |
 |---|---|
 | Badge zeigt „Getrennt – verbinde neu“ | Läuft der Relay? `npm run dev` startet ihn mit. Port 3001 frei? Firewall? |
-| Handy findet die Seite nicht | Gleiches WLAN? Firewall für Port 3000/3001? `NEXT_PUBLIC_BASE_URL` setzen. |
+| Handy findet die Seite nicht | Gleiches WLAN? Firewall für Port 3000/3001? `PUBLIC_BASE_URL` setzen. |
 | „Spiel nicht gefunden“ | Code prüfen. Im lokalen Modus muss derselbe Server laufen, der das Spiel erstellt hat. |
 | Host-Tab geschlossen | Seite `/admin/host/<CODE>` im selben Tab neu öffnen bzw. neu laden – der Zustand wird wiederhergestellt. |
 | Open Trivia DB: „Zu viele Anfragen“ | Die API erlaubt eine Anfrage alle 5 Sekunden – kurz warten. |
