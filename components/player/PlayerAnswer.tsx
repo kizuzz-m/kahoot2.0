@@ -10,10 +10,12 @@ import { cn } from "@/lib/utils";
 export function PlayerAnswer({
   question,
   deadline,
+  opensAt,
   onAnswer,
 }: {
   question: PublicQuestion;
   deadline: number | null;
+  opensAt: number | null;
   onAnswer: (choices: number[]) => void;
 }) {
   const [selected, setSelected] = useState<number[]>([]);
@@ -24,9 +26,30 @@ export function PlayerAnswer({
     return () => clearInterval(iv);
   }, []);
 
-  const remaining = deadline ? Math.max(0, deadline - now) : 0;
-  const ratio = question.timeLimit ? remaining / (question.timeLimit * 1000) : 0;
+  const readingLeft = opensAt ? Math.max(0, opensAt - now) : 0;
+  const totalMs = question.timeLimit * 1000;
+  const remaining = deadline ? Math.min(totalMs, Math.max(0, deadline - now)) : 0;
+  const ratio = totalMs ? remaining / totalMs : 0;
   const timeUp = deadline !== null && remaining <= 0;
+
+  if (readingLeft > 0) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center animate-pop">
+        <p className="text-sm font-semibold uppercase tracking-widest text-muted">Lies die Frage</p>
+        <p className="font-display text-2xl font-bold leading-snug sm:text-3xl">{question.text}</p>
+        {question.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={question.image} alt="" className="max-h-40 rounded-2xl object-contain" />
+        ) : question.hasImage ? (
+          <p className="text-sm text-muted">🖼 Schau dir das Bild auf dem großen Bildschirm an</p>
+        ) : null}
+        <div className="font-display grid h-16 w-16 place-items-center rounded-full border-2 border-brand text-2xl font-extrabold text-brand tabular-nums">
+          {Math.ceil(readingLeft / 1000)}
+        </div>
+        <p className="text-sm text-muted">Gleich erscheinen die Antworten.</p>
+      </div>
+    );
+  }
 
   if (timeUp) {
     return (

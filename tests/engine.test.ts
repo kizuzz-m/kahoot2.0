@@ -8,6 +8,7 @@ import {
   createHostState,
   isCorrectAnswer,
   rankedPlayers,
+  readingTimeMs,
   revealAnswers,
   startQuestion,
   submitAnswer,
@@ -102,4 +103,23 @@ test("Zu späte Antworten werden verworfen", () => {
   s = startQuestion(r.state, 1, 0);
   s = submitAnswer(s, "p1", 1, [0, 2], 12_000);
   assert.equal(Object.keys(s.answers).length, 0);
+});
+
+test("Lesezeit: Antworten erst danach, Punkte ab Freigabe", () => {
+  let s = createHostState("123456", quiz, "sess");
+  const r = addPlayer(s, "p1", "Anna", 1);
+  assert.ok(r.ok);
+  const readMs = readingTimeMs(quiz.questions[0]);
+  assert.ok(readMs >= 4000 && readMs <= 8000);
+
+  s = startQuestion(r.state, 0, 0, readMs);
+  const snap = buildSnapshot(s, 1000);
+  assert.equal(snap.question?.readingMs, readMs - 1000);
+  assert.equal(snap.question?.remainingMs, readMs + 20_000 - 1000);
+
+  s = submitAnswer(s, "p1", 0, [1], readMs - 1); // während der Lesezeit → ignoriert
+  assert.equal(Object.keys(s.answers).length, 0);
+  s = submitAnswer(s, "p1", 0, [1], readMs); // sofort nach Freigabe → volle Punkte
+  s = revealAnswers(s, readMs + 500);
+  assert.equal(s.players.p1.score, 1000);
 });

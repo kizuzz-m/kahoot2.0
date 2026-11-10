@@ -26,6 +26,7 @@ export interface HostState {
   quiz: Quiz;
   phase: Phase;
   questionIndex: number;
+  /** Zeitpunkt, ab dem geantwortet werden kann (nach der Lesezeit) */
   questionStartedAt: number;
   questionEndsAt: number;
   players: Record<string, PlayerState>;
@@ -123,16 +124,26 @@ export function removePlayer(s: HostState, playerId: string, kick: boolean): Hos
   return bump({ ...s, players, answers, kicked: kick ? [...s.kicked, playerId] : s.kicked });
 }
 
-export function startQuestion(s: HostState, index: number, now: number): HostState {
+/**
+ * Lesezeit, bevor die Antworten erscheinen: 4–8 Sekunden je nach Textlänge.
+ * Gemessen wird ab Ende der Lesezeit, langsames Lesen kostet also keine Punkte.
+ */
+export function readingTimeMs(q: Question | undefined): number {
+  if (!q) return 0;
+  return Math.min(8000, Math.max(4000, 2500 + q.text.length * 50));
+}
+
+export function startQuestion(s: HostState, index: number, now: number, readMs = 0): HostState {
   const q = s.quiz.questions[index];
   if (!q) return s;
   const players = Object.fromEntries(Object.entries(s.players).map(([id, p]) => [id, { ...p, lastGained: 0 }]));
+  const opensAt = now + Math.max(0, readMs);
   return bump({
     ...s,
     phase: "question",
     questionIndex: index,
-    questionStartedAt: now,
-    questionEndsAt: now + q.timeLimit * 1000,
+    questionStartedAt: opensAt,
+    questionEndsAt: opensAt + q.timeLimit * 1000,
     players,
     answers: {},
     results: {},
@@ -143,6 +154,7 @@ export function submitAnswer(s: HostState, playerId: string, questionIndex: numb
   const q = currentQuestion(s);
   if (!q || s.phase !== "question" || questionIndex !== s.questionIndex) return s;
   if (!s.players[playerId] || s.answers[playerId]) return s;
+  if (now < s.questionStartedAt) return s; // noch Lesezeit
   if (now > s.questionEndsAt + ANSWER_GRACE_MS) return s;
   const valid = [...new Set(choices)].filter((c) => Number.isInteger(c) && c >= 0 && c < q.answers.length);
   if (!valid.length) return s;
@@ -223,6 +235,7 @@ export function buildSnapshot(s: HostState, now: number): PublicSnapshot {
           timeLimit: q.timeLimit,
           points: q.points,
           remainingMs: inQuestion ? Math.max(0, s.questionEndsAt - now) : 0,
+          readingMs: inQuestion ? Math.max(0, s.questionStartedAt - now) : 0,
         }
       : null,
     answeredIds: inQuestion ? Object.keys(s.answers) : [],

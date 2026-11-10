@@ -12,6 +12,7 @@ import {
   finishGame,
   isLastQuestion,
   rankedPlayers,
+  readingTimeMs,
   removePlayer,
   revealAnswers,
   showLeaderboard,
@@ -212,7 +213,7 @@ export function useHostGame(code: string) {
 
   /* Aktionen */
   const start = useCallback(() => {
-    update((s) => startQuestion(s, 0, Date.now()));
+    update((s) => startQuestion(s, 0, Date.now(), readingTimeMs(s.quiz.questions[0])));
     void fetch(`/api/games/${code}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -225,7 +226,10 @@ export function useHostGame(code: string) {
   const next = useCallback(() => {
     update((s) => {
       if (s.phase === "reveal") return isLastQuestion(s) ? finishGame(s) : showLeaderboard(s);
-      if (s.phase === "leaderboard") return startQuestion(s, s.questionIndex + 1, Date.now());
+      if (s.phase === "leaderboard") {
+        const nextIndex = s.questionIndex + 1;
+        return startQuestion(s, nextIndex, Date.now(), readingTimeMs(s.quiz.questions[nextIndex]));
+      }
       return s;
     });
   }, [update]);

@@ -119,14 +119,14 @@ export function QuizLibrary() {
                   </p>
                 </div>
               </div>
-              <div className="mt-auto flex items-center gap-1.5 pt-5">
+              <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-5">
                 <Button size="sm" onClick={() => play(q.id)} disabled={busyId === q.id}>
                   {busyId === q.id ? "Starte …" : "▶ Hosten"}
                 </Button>
                 <LinkButton href={`/admin/edit/${q.id}`} variant="secondary" size="sm">
                   Bearbeiten
                 </LinkButton>
-                <div className="ml-auto flex">
+                <div className="ml-auto flex shrink-0">
                   <Button variant="ghost" size="sm" onClick={() => exportQuiz(q.id)} title="Als JSON exportieren">
                     Export
                   </Button>

@@ -42,6 +42,8 @@ export function usePlayerGame(code: string) {
   const [connection, setConnection] = useState<ConnectionStatus>("connecting");
   const [hostLost, setHostLost] = useState(false);
   const [deadline, setDeadline] = useState<number | null>(null);
+  /** Lokaler Zeitpunkt, ab dem die Antworten freigegeben sind (nach der Lesezeit) */
+  const [opensAt, setOpensAt] = useState<number | null>(null);
   const [myAnswer, setMyAnswer] = useState<{ questionIndex: number; choices: number[] } | null>(null);
 
   const channelRef = useRef<RealtimeChannel | null>(null);
@@ -93,10 +95,13 @@ export function usePlayerGame(code: string) {
 
         if (snap.phase === "question" && snap.question) {
           const candidate = Date.now() + snap.question.remainingMs;
+          const openCandidate = Date.now() + (snap.question.readingMs ?? 0);
           const isNew = !prev || prev.phase !== "question" || prev.questionIndex !== snap.questionIndex;
           setDeadline((d) => (isNew || d === null ? candidate : Math.min(d, candidate)));
+          setOpensAt((o) => (isNew || o === null ? openCandidate : Math.min(o, openCandidate)));
         } else {
           setDeadline(null);
+          setOpensAt(null);
         }
 
         if (me) {
@@ -208,6 +213,7 @@ export function usePlayerGame(code: string) {
     connection,
     hostLost,
     deadline,
+    opensAt,
     myAnswer: answeredCurrent,
     actions: { join, answer, resetName, leave },
   };

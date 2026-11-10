@@ -63,6 +63,7 @@ beliebig vielen Geräten** spielst. Der Host zeigt Fragen auf einem großen Bild
 **Live-Spiel**
 - Lobby mit großem Code, **QR-Code** und Spielerliste (Spieler per Klick entfernen)
 - Automatische Erkennung der Netzwerk-IP, damit der QR-Code auch funktioniert, wenn der Host über `localhost` läuft
+- Lesezeit vor jeder Frage (4–8 s je nach Textlänge): erst die Frage, dann die Antworten
 - Synchroner Countdown auf allen Geräten (unabhängig von abweichenden Geräteuhren)
 - Punkte nach Geschwindigkeit (100 % sofort → 50 % kurz vor Ablauf), Serien-Anzeige 🔥
 - Auflösung mit Antwortverteilung, Erklärung, Rangliste nach jeder Frage, Podium am Ende

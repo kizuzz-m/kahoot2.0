@@ -28,8 +28,10 @@ export interface PublicQuestion {
   multi: boolean;
   timeLimit: number;
   points: number;
-  /** Restzeit in ms zum Zeitpunkt des Snapshots (unabhängig von Uhrzeit-Abweichungen der Geräte) */
+  /** Restzeit in ms bis Fragenende (inkl. Lesezeit) zum Zeitpunkt des Snapshots – unabhängig von Geräteuhren */
   remainingMs: number;
+  /** Verbleibende Lesezeit in ms, bevor die Antworten freigegeben werden */
+  readingMs: number;
 }
 
 export interface PlayerResult {

@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { PlayerAnswer } from "./PlayerAnswer";
 
 export function PlayerGame({ code }: { code: string }) {
-  const { identity, stage, rejectReason, snapshot, connection, hostLost, deadline, myAnswer, actions } =
+  const { identity, stage, rejectReason, snapshot, connection, hostLost, deadline, opensAt, myAnswer, actions } =
     usePlayerGame(code);
   const [gameCheck, setGameCheck] = useState<{ ok: boolean; title?: string; message?: string } | null>(null);
 
@@ -58,7 +58,7 @@ export function PlayerGame({ code }: { code: string }) {
   } else if (stage === "joining" || !snapshot) {
     body = <Centered emoji="📡" title="Verbinde mit dem Spiel …" text="Einen Moment, gleich bist du dabei." pulse />;
   } else {
-    body = <JoinedView snapshot={snapshot} playerId={identity!.id} deadline={deadline} myAnswer={myAnswer} onAnswer={actions.answer} />;
+    body = <JoinedView snapshot={snapshot} playerId={identity!.id} deadline={deadline} opensAt={opensAt} myAnswer={myAnswer} onAnswer={actions.answer} />;
   }
 
   return (
@@ -156,12 +156,14 @@ function JoinedView({
   snapshot: s,
   playerId,
   deadline,
+  opensAt,
   myAnswer,
   onAnswer,
 }: {
   snapshot: PublicSnapshot;
   playerId: string;
   deadline: number | null;
+  opensAt: number | null;
   myAnswer: { questionIndex: number; choices: number[] } | null;
   onAnswer: (choices: number[]) => void;
 }) {
@@ -196,7 +198,7 @@ function JoinedView({
         </Centered>
       );
     }
-    return <PlayerAnswer key={s.questionIndex} question={s.question} deadline={deadline} onAnswer={onAnswer} />;
+    return <PlayerAnswer key={s.questionIndex} question={s.question} deadline={deadline} opensAt={opensAt} onAnswer={onAnswer} />;
   }
 
   if ((s.phase === "reveal" || s.phase === "leaderboard") && s.reveal) {
